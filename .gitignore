@@ -1,0 +1,50 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp
+.pnp.js
+
+# Next.js build outputs
+.next/
+out/
+.vercel/
+server/
+
+# Storybook build files
+.storybook/build/
+storybook-static/
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.gz
+
+# Editor/IDE files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Jest/Testing related files
+coverage/
+jest/
+.vitest/
+
+# TypeScript cache & build files
+dist/
+*.tsbuildinfo
+
+# Misc
+*.swp
