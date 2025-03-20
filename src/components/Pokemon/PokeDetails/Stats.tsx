@@ -33,21 +33,21 @@ const StatsBadge = ({ name, value, color }: StatsBadgeType) => {
 
 const Stats = ({ stats }: StatsProps) => {
   const totalStats = stats.reduce(
-    (total: number, current) => total + current.base_stat,
+    (total, current) => total + current.base_stat,
     0
   );
-
-  const colorsArray = Object.entries(typeColors);
 
   return (
     <div className="flex flex-col w-full">
       <span className="text-center font-bold">Stats</span>
       <div className="flex flex-row w-full justify-between">
-        {stats.map((stat, index) => {
+        {stats.map((stat) => {
+          const color =
+            typeColors[stat.pokemon_v2_stat.name.toLowerCase()] || "#777";
           return (
             <StatsBadge
-              key={index}
-              color={colorsArray[index][1]}
+              key={stat.pokemon_v2_stat.name}
+              color={color}
               name={getTrigram(stat.pokemon_v2_stat.name)}
               value={stat.base_stat}
             />
