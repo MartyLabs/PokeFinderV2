@@ -37,7 +37,7 @@ const FilterButton = ({ onSelectType, selectedType }: FilterButtonProps) => {
     <div className="relative z-50" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 bg-white shadow-md px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-100"
+        className="cursor-pointer flex items-center space-x-2 bg-white shadow-md px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-100"
       >
         <FaFilter className="text-gray-600" />
         <span className="text-gray-800 font-medium">
