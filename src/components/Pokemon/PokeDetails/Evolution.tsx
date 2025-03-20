@@ -26,7 +26,6 @@ const Evolution = ({
           evo.pokemon_v2_pokemons[0]?.pokemon_v2_pokemonsprites[0]?.sprites
             ?.front_default || "/placeholder.png";
 
-        // Vérifie si nextEvolution existe
         const nextEvolution = evolution[index + 1] ?? null;
 
         const minLevel =

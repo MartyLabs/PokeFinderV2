@@ -5,8 +5,11 @@ import Metrics from "./Metrics";
 import Abilities from "./Abilities";
 import Description from "./Description";
 import Evolution from "./Evolution";
+import { FaRegStar, FaStar } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { addFavorite, getFavorites, removeFavorite } from "@/utils/favorites";
 
-interface PokemonDetailsProps {
+interface PokeDetailsCardProps {
   pokemon: {
     id: number;
     name: string;
@@ -29,12 +32,16 @@ interface PokemonDetailsProps {
         pokemon_v2_pokemons: {
           pokemon_v2_pokemonsprites: { sprites: { front_default: string } }[];
         }[];
+        pokemon_v2_pokemonevolutions: {
+          min_level: number | null;
+          evolved_species_id: number;
+        }[];
       }[];
     };
   };
 }
 
-const PokeDetails = ({ pokemon, species }: PokemonDetailsProps) => {
+const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
   const {
     id,
     name,
@@ -44,6 +51,9 @@ const PokeDetails = ({ pokemon, species }: PokemonDetailsProps) => {
     pokemon_v2_pokemontypes,
   } = pokemon;
 
+  const [favorite, setFavorite] = useState<boolean>(false);
+  const [animating, setAnimating] = useState<boolean>(false);
+
   const sprite =
     pokemon_v2_pokemonsprites[0]?.sprites?.front_default || "/placeholder.png";
   const description =
@@ -51,6 +61,23 @@ const PokeDetails = ({ pokemon, species }: PokemonDetailsProps) => {
     "No description available";
   const evolution =
     species.pokemon_v2_evolutionchain.pokemon_v2_pokemonspecies || [];
+
+  useEffect(() => {
+    const favorites = getFavorites();
+    setFavorite(favorites.includes(id));
+  }, [id]);
+
+  const toggleFavorite = () => {
+    setAnimating(true);
+    setTimeout(() => setAnimating(false), 300);
+
+    if (favorite) {
+      removeFavorite(id);
+    } else {
+      addFavorite(id);
+    }
+    setFavorite(!favorite);
+  };
 
   return (
     <div className="w-90 mt-12 h-auto rounded-3xl px-6 bg-white shadow-md flex flex-col items-center justify-center relative pb-5">
@@ -63,6 +90,18 @@ const PokeDetails = ({ pokemon, species }: PokemonDetailsProps) => {
       />
 
       <div className="flex flex-col items-center space-y-2.5 mt-24">
+        <button
+          onClick={toggleFavorite}
+          className={`absolute cursor-pointer top-2 right-2 bg-white p-2 rounded-full shadow-md transition-transform duration-300 ease-in-out ${
+            animating ? "scale-125 rotate-12" : "scale-100"
+          }`}
+        >
+          {favorite ? (
+            <FaStar className="text-yellow-500" />
+          ) : (
+            <FaRegStar className="text-gray-400" />
+          )}
+        </button>
         <span className="font-semibold text-gray-400">N°{id}</span>
         <h2 className="font-bold text-2xl">{capitalize(name)}</h2>
 
@@ -101,4 +140,4 @@ const PokeDetails = ({ pokemon, species }: PokemonDetailsProps) => {
   );
 };
 
-export default PokeDetails;
+export default PokeDetailsCard;
