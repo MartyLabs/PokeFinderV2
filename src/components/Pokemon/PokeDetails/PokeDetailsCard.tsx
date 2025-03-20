@@ -1,44 +1,50 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { capitalize, typeColors } from "@/utils/utils";
 import Stats from "./Stats";
 import Metrics from "./Metrics";
 import Abilities from "./Abilities";
 import Description from "./Description";
 import Evolution from "./Evolution";
-import { FaRegStar, FaStar } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { addFavorite, getFavorites, removeFavorite } from "@/utils/favorites";
 
-interface PokeDetailsCardProps {
-  pokemon: {
-    id: number;
-    name: string;
-    height: number;
-    weight: number;
-    pokemon_v2_pokemonsprites: { sprites: { front_default: string } }[];
-    pokemon_v2_pokemontypes: { pokemon_v2_type: { name: string } }[];
-    pokemon_v2_pokemonabilities: { pokemon_v2_ability: { name: string } }[];
-    pokemon_v2_pokemonstats: {
-      base_stat: number;
-      pokemon_v2_stat: { name: string };
+interface PokemonType {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  pokemon_v2_pokemonsprites: { sprites: { front_default: string } }[];
+  pokemon_v2_pokemontypes: { pokemon_v2_type: { name: string } }[];
+  pokemon_v2_pokemonabilities: { pokemon_v2_ability: { name: string } }[];
+  pokemon_v2_pokemonstats: {
+    base_stat: number;
+    pokemon_v2_stat: { name: string };
+  }[];
+}
+
+interface SpeciesType {
+  pokemon_v2_pokemonspeciesflavortexts: { flavor_text: string }[];
+  pokemon_v2_evolutionchain: {
+    pokemon_v2_pokemonspecies: {
+      id: number;
+      name: string;
+      pokemon_v2_pokemons: {
+        pokemon_v2_pokemonsprites: { sprites: { front_default: string } }[];
+      }[];
+      pokemon_v2_pokemonevolutions: {
+        min_level: number | null;
+        evolved_species_id: number;
+      }[];
     }[];
   };
-  species: {
-    pokemon_v2_pokemonspeciesflavortexts: { flavor_text: string }[];
-    pokemon_v2_evolutionchain: {
-      pokemon_v2_pokemonspecies: {
-        id: number;
-        name: string;
-        pokemon_v2_pokemons: {
-          pokemon_v2_pokemonsprites: { sprites: { front_default: string } }[];
-        }[];
-        pokemon_v2_pokemonevolutions: {
-          min_level: number | null;
-          evolved_species_id: number;
-        }[];
-      }[];
-    };
-  };
+}
+
+interface PokeDetailsCardProps {
+  pokemon: PokemonType;
+  species: SpeciesType;
 }
 
 const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
@@ -51,7 +57,9 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
     pokemon_v2_pokemontypes,
   } = pokemon;
 
-  const [favorite, setFavorite] = useState<boolean>(false);
+  const [favorite, setFavorite] = useState<boolean>(() =>
+    getFavorites().includes(id)
+  );
   const [animating, setAnimating] = useState<boolean>(false);
 
   const sprite =
@@ -106,16 +114,16 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
         <h2 className="font-bold text-2xl">{capitalize(name)}</h2>
 
         <div className="flex justify-center space-x-2">
-          {pokemon_v2_pokemontypes.map((type) => (
+          {pokemon_v2_pokemontypes.map(({ pokemon_v2_type }) => (
             <span
-              key={type.pokemon_v2_type.name}
+              key={pokemon_v2_type.name}
               style={{
                 backgroundColor:
-                  typeColors[type.pokemon_v2_type.name.toLowerCase()] || "#777",
+                  typeColors[pokemon_v2_type.name.toLowerCase()] || "#777",
               }}
               className="text-white rounded-lg px-2 py-0.5"
             >
-              {capitalize(type.pokemon_v2_type.name)}
+              {capitalize(pokemon_v2_type.name)}
             </span>
           ))}
         </div>
@@ -130,6 +138,7 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
           )}
         />
         <Stats stats={pokemon.pokemon_v2_pokemonstats} />
+
         {evolution.length > 1 ? (
           <Evolution evolution={evolution} />
         ) : (
