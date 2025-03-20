@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import { getFavorites } from "@/utils/favorites";
+import { useState, useEffect, useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
 import PokemonCard from "@/components/PokemonCard";
 import Spinner from "@/components/UI/Spinner";
@@ -10,6 +8,18 @@ import SearchBar from "@/components/SearchBar";
 import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";
 import ReloadButton from "@/components/UI/ReloadButton";
 import PageToggle from "@/components/UI/PageToggle";
+import { getFavorites } from "@/utils/favorites";
+
+interface PokemonType {
+  id: number;
+  name: string;
+  pokemon_v2_pokemonsprites: {
+    sprites: { front_default: string };
+  }[];
+  pokemon_v2_pokemontypes: {
+    pokemon_v2_type: { name: string };
+  }[];
+}
 
 const GET_POKEMON_BY_IDS = gql`
   query getPokemonsByIds($ids: [Int!]) {
@@ -28,27 +38,35 @@ const GET_POKEMON_BY_IDS = gql`
   }
 `;
 
-export default function FavoritesPage() {
+const FavoritesPage = () => {
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [currentPokemon, setCurrentPokemon] = useState();
+  const [currentPokemon, setCurrentPokemon] = useState<PokemonType | null>(
+    null
+  );
 
   useEffect(() => {
     setFavoriteIds(getFavorites());
   }, []);
 
-  const { loading, error, data } = useQuery(GET_POKEMON_BY_IDS, {
+  const { loading, error, data } = useQuery<{
+    pokemon_v2_pokemon: PokemonType[];
+  }>(GET_POKEMON_BY_IDS, {
     variables: { ids: favoriteIds.length > 0 ? favoriteIds : [0] },
     skip: favoriteIds.length === 0,
   });
 
-  if (loading) return <Spinner />;
-  if (error) return <p>Error loading Pokémon</p>;
+  const filteredFavorites = useMemo(() => {
+    return (
+      data?.pokemon_v2_pokemon.filter((pokemon) =>
+        pokemon.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+      ) || []
+    );
+  }, [data, searchTerm]);
 
-  const filteredFavorites =
-    data?.pokemon_v2_pokemon.filter((pokemon: any) =>
-      pokemon.name.toLowerCase().startsWith(searchTerm.toLowerCase())
-    ) || [];
+  if (loading) return <Spinner />;
+  if (error)
+    return <p className="text-center text-gray-500">Error loading Pokémon</p>;
 
   return (
     <div className="bg-[#f7f8fc] pl-40 py-12 h-screen w-screen flex flex-row space-y-4">
@@ -83,4 +101,6 @@ export default function FavoritesPage() {
       </div>
     </div>
   );
-}
+};
+
+export default FavoritesPage;
