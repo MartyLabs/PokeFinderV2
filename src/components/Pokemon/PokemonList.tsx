@@ -1,33 +1,20 @@
-"use client";
-
-import { gql, useQuery } from "@apollo/client";
 import PokemonCard from "@/components/PokemonCard";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";
 import Spinner from "@/components/UI/Spinner";
-import ReloadButton from "@/components/UI/ReloadButton";
-import PageToggle from "@/components/UI/PageToggle";
 
-const GET_POKEMONS = gql`
-  query {
-    pokemon_v2_pokemon(limit: 10) {
-      id
-      name
-      pokemon_v2_pokemonsprites {
-        sprites
-      }
-      pokemon_v2_pokemontypes {
-        pokemon_v2_type {
-          name
-        }
-      }
-    }
-  }
-`;
+interface PokemonPageProps {
+  data: any;
+  loading: boolean;
+  error: any;
+}
 
-export default function PokemonPage() {
-  const { loading, error, data } = useQuery(GET_POKEMONS);
+export default function PokemonList({
+  data,
+  loading,
+  error,
+}: PokemonPageProps) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPokemon, setCurrentPokemon] = useState();
 
@@ -47,11 +34,7 @@ export default function PokemonPage() {
   return (
     <div className="bg-[#f7f8fc] pl-40 py-12 h-screen w-screen flex flex-row space-y-4">
       <div className="w-[70%] flex-shrink-0">
-        <div className="flex flex-row justify-between items-center space-x-4">
-          <SearchBar onChange={setSearchTerm} />
-          <ReloadButton />
-          <PageToggle />
-        </div>
+        <SearchBar onChange={setSearchTerm} />
         <div className="flex flex-wrap flex-row justify-between gap-y-16 pt-16 pb-8 overflow-y-auto pr-4">
           {filteredPokemons.length > 0 ? (
             filteredPokemons.map((pokemon: any) => (
