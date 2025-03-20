@@ -4,6 +4,8 @@ import { gql, useQuery } from "@apollo/client";
 import PokemonCard from "@/components/PokemonCard";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
+import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";
+import Spinner from "@/components/UI/Spinner";
 
 const GET_POKEMONS = gql`
   query {
@@ -25,6 +27,7 @@ const GET_POKEMONS = gql`
 export default function PokemonPage() {
   const { loading, error, data } = useQuery(GET_POKEMONS);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPokemon, setCurrentPokemon] = useState();
 
   if (!data || !data.pokemon_v2_pokemon) {
     return (
@@ -33,28 +36,34 @@ export default function PokemonPage() {
   }
 
   const filteredPokemons = data.pokemon_v2_pokemon.filter((pokemon: any) =>
-    pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+    pokemon.name.toLowerCase().startsWith(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">Pokémon Explorer</h1>
-
-      <SearchBar onChange={setSearchTerm} />
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-        {filteredPokemons.length > 0 ? (
-          filteredPokemons.map((pokemon: any) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-500">
-            No Pokémon found...
-          </p>
-        )}
+    <div className="bg-[#f7f8fc] pl-40 py-12 h-screen w-screen flex flex-row space-y-4">
+      <div className="w-[70%] flex-shrink-0">
+        <SearchBar onChange={setSearchTerm} />
+        <div className="flex flex-wrap flex-row justify-between gap-y-16 pt-16 pb-8 overflow-y-auto pr-4">
+          {filteredPokemons.length > 0 ? (
+            filteredPokemons.map((pokemon: any) => (
+              <PokemonCard
+                onClick={() => setCurrentPokemon(pokemon)}
+                key={pokemon.id}
+                pokemon={pokemon}
+              />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              No Pokémon found...
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="w-full flex-1 flex flex-col justify-center items-center">
+        {currentPokemon && <PokeDetails pokemonId={currentPokemon.id} />}
       </div>
     </div>
   );
