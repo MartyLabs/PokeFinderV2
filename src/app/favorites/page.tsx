@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
-import PokemonCard from "@/components/Pokemon/PokemonCard";
+import PokemonCard from "@/components/Pokemon/PokemonCard/PokemonCard";
 import Spinner from "@/components/UI/Spinner";
 import SearchBar from "@/components/SearchBar";
 import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";
@@ -69,21 +69,23 @@ const FavoritesPage = () => {
     return <p className="text-center text-gray-500">Error loading Pokémon</p>;
 
   return (
-    <div className="bg-[#f7f8fc] pl-40 py-12 h-screen w-screen flex flex-row space-y-4">
-      <div className="w-[70%] flex-shrink-0">
-        <div className="flex flex-row justify-between items-center space-x-4">
+    <div className="bg-[#f7f8fc] lg:pl-40 px-4 py-12 min-h-screen w-screen flex flex-col lg:flex-row lg:space-y-0 space-y-8">
+      <div className="w-full lg:w-[70%] flex-shrink-0 px-4 lg:px-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:space-x-4 space-y-4 sm:space-y-0">
           <SearchBar onChange={setSearchTerm} />
-          <ReloadButton />
-          <PageToggle />
+          <div className="flex flex-row gap-4 items-center justify-between sm:justify-end">
+            <ReloadButton />
+            <PageToggle />
+          </div>
         </div>
 
-        <div className="flex flex-wrap flex-row justify-between gap-y-16 pt-16 pb-8 overflow-y-auto pr-4">
+        <div className="pt-16 pb-8 overflow-y-auto pr-0 lg:pr-4">
           {filteredFavorites.length === 0 ? (
             <p className="text-center text-gray-500">
               No matching Pokémon found.
             </p>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center sm:justify-items-stretch">
               {filteredFavorites.map((pokemon) => (
                 <PokemonCard
                   key={pokemon.id}
@@ -96,7 +98,7 @@ const FavoritesPage = () => {
         </div>
       </div>
 
-      <div className="w-full flex-1 flex flex-col justify-center items-center">
+      <div className="w-full lg:flex-1 flex flex-col justify-center items-center">
         {currentPokemon && <PokeDetails pokemonId={currentPokemon.id} />}
       </div>
     </div>

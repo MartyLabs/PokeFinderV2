@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import PokemonCard from "./PokemonCard";
+
 import ApolloProvider from "@/lib/ApolloProvider";
+import PokemonCard from "./PokemonCard";
 
 const mockPokemon = {
   id: 25,

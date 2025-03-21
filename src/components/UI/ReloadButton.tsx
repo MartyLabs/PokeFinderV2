@@ -8,7 +8,7 @@ const ReloadButton = () => {
   return (
     <button
       onClick={handleReload}
-      className="bg-white rounded-lg p-3 shadow-md cursor-pointer"
+      className="z-50 bg-white rounded-lg p-3 shadow-md cursor-pointer"
     >
       <FaSync className="text-gray-600 text-lg" />
     </button>

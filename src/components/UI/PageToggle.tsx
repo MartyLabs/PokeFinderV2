@@ -15,7 +15,7 @@ const PageToggle = () => {
   return (
     <button
       onClick={handleToggle}
-      className="cursor-pointer inline-flex items-center space-x-2 bg-white shadow-md px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-100 whitespace-nowrap"
+      className="z-50 cursor-pointer inline-flex items-center space-x-2 bg-white shadow-md px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gray-100 whitespace-nowrap"
     >
       {isFavoritesPage ? (
         <>

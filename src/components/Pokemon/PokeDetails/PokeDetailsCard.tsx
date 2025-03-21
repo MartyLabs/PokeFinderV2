@@ -4,11 +4,15 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { capitalize, typeColors } from "@/utils/utils";
-import Stats from "./Stats";
-import Metrics from "./Metrics";
-import Abilities from "./Abilities";
-import Description from "./Description";
-import Evolution from "./Evolution";
+
+import {
+  Stats,
+  Description,
+  Evolution,
+  Abilities,
+  Metrics,
+} from "@/components/Pokemon/PokeDetails/subcomponents";
+
 import { addFavorite, getFavorites, removeFavorite } from "@/utils/favorites";
 import { motion } from "framer-motion";
 
