@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
-import PokemonCard from "@/components/PokemonCard";
+import PokemonCard from "@/components/Pokemon/PokemonCard";
 import Spinner from "@/components/UI/Spinner";
 import SearchBar from "@/components/SearchBar";
 import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";

@@ -2,13 +2,14 @@
 
 import { gql, useQuery } from "@apollo/client";
 import { useMemo, useState } from "react";
-import PokemonCard from "@/components/PokemonCard";
+import PokemonCard from "@/components/Pokemon/PokemonCard";
 import SearchBar from "@/components/SearchBar";
 import PokeDetails from "@/components/Pokemon/PokeDetails/PokeDetails";
 import Spinner from "@/components/UI/Spinner";
 import ReloadButton from "@/components/UI/ReloadButton";
 import PageToggle from "@/components/UI/PageToggle";
 import FilterButton from "@/components/UI/FilterButton";
+import { motion } from "framer-motion";
 
 interface PokemonType {
   id: number;
@@ -88,7 +89,12 @@ const PokemonPage = () => {
           <PageToggle />
         </div>
 
-        <div className="flex flex-wrap flex-row justify-between gap-y-16 pt-16 pb-8 overflow-y-auto pr-4">
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-16 pt-16 pb-8 overflow-y-auto pr-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           {filteredPokemons.length > 0 ? (
             filteredPokemons.map((pokemon) => (
               <PokemonCard
@@ -102,7 +108,7 @@ const PokemonPage = () => {
               No Pokémon found...
             </p>
           )}
-        </div>
+        </motion.div>
       </div>
 
       <div className="w-full flex-1 flex flex-col justify-center items-center">

@@ -10,6 +10,7 @@ import Abilities from "./Abilities";
 import Description from "./Description";
 import Evolution from "./Evolution";
 import { addFavorite, getFavorites, removeFavorite } from "@/utils/favorites";
+import { motion } from "framer-motion";
 
 interface PokemonType {
   id: number;
@@ -60,7 +61,6 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
   const [favorite, setFavorite] = useState<boolean>(() =>
     getFavorites().includes(id)
   );
-  const [animating, setAnimating] = useState<boolean>(false);
 
   const sprite =
     pokemon_v2_pokemonsprites[0]?.sprites?.front_default || "/placeholder.png";
@@ -76,9 +76,6 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
   }, [id]);
 
   const toggleFavorite = () => {
-    setAnimating(true);
-    setTimeout(() => setAnimating(false), 300);
-
     if (favorite) {
       removeFavorite(id);
     } else {
@@ -90,6 +87,7 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
   return (
     <div className="w-90 mt-12 h-auto rounded-3xl px-6 bg-white shadow-md flex flex-col items-center justify-center relative pb-5">
       <Image
+        data-testid="pokemon-img"
         src={sprite}
         alt={name}
         width={216}
@@ -98,24 +96,30 @@ const PokeDetailsCard = ({ pokemon, species }: PokeDetailsCardProps) => {
       />
 
       <div className="flex flex-col items-center space-y-2.5 mt-24">
-        <button
+        <motion.button
+          data-testid="favorite-button"
           onClick={toggleFavorite}
-          className={`absolute cursor-pointer top-2 right-2 bg-white p-2 rounded-full shadow-md transition-transform duration-300 ease-in-out ${
-            animating ? "scale-125 rotate-12" : "scale-100"
-          }`}
+          className={`absolute cursor-pointer top-2 right-2 bg-white p-2 rounded-full shadow-md transition-transform duration-300 ease-in-out`}
+          animate={{ scale: favorite ? 1.2 : 1, rotate: favorite ? 10 : 0 }}
+          transition={{ duration: 0.3 }}
         >
           {favorite ? (
             <FaStar className="text-yellow-500" />
           ) : (
             <FaRegStar className="text-gray-400" />
           )}
-        </button>
-        <span className="font-semibold text-gray-400">N°{id}</span>
-        <h2 className="font-bold text-2xl">{capitalize(name)}</h2>
+        </motion.button>
+        <span data-testid="pokemon-id" className="font-semibold text-gray-400">
+          N°{id}
+        </span>
+        <h2 data-testid="pokemon-name" className="font-bold text-2xl">
+          {capitalize(name)}
+        </h2>
 
         <div className="flex justify-center space-x-2">
           {pokemon_v2_pokemontypes.map(({ pokemon_v2_type }) => (
             <span
+              data-testid="pokemon-type"
               key={pokemon_v2_type.name}
               style={{
                 backgroundColor:

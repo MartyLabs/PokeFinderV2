@@ -8,11 +8,18 @@ export interface StatsBadgeType {
   name: string;
   value: number;
   color: string;
+  "data-testid": string;
 }
 
-const StatsBadge = ({ name, value, color }: StatsBadgeType) => {
+const StatsBadge = ({
+  name,
+  value,
+  color,
+  "data-testid": testId,
+}: StatsBadgeType) => {
   return (
     <div
+      data-testid={testId}
       style={{
         backgroundColor: name === "TOT" ? "#8ba9e9" : "#f3f4f6",
       }}
@@ -38,7 +45,7 @@ const Stats = ({ stats }: StatsProps) => {
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div data-testid="stats-section" className="flex flex-col w-full">
       <span className="text-center font-bold">Stats</span>
       <div className="flex flex-row w-full justify-between">
         {stats.map((stat) => {
@@ -50,10 +57,16 @@ const Stats = ({ stats }: StatsProps) => {
               color={color}
               name={getTrigram(stat.pokemon_v2_stat.name)}
               value={stat.base_stat}
+              data-testid={`stat-${stat.pokemon_v2_stat.name}`}
             />
           );
         })}
-        <StatsBadge color="#6b98db" name="TOT" value={totalStats} />
+        <StatsBadge
+          data-testid="stat-TOT"
+          color="#6b98db"
+          name="TOT"
+          value={totalStats}
+        />
       </div>
     </div>
   );
