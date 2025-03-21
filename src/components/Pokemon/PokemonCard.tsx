@@ -28,10 +28,12 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onClick }) => {
 
   return (
     <div
+      data-testid="createTitle"
       onClick={onClick}
       className="w-70 h-40 rounded-3xl cursor-pointer hover:border-2 hover:border-gray-300 hover:shadow-none transition-all duration-50 bg-white shadow-md flex flex-col items-center justify-center relative group"
     >
       <Image
+        data-testid="pokemon-img"
         src={sprite}
         alt={name}
         width={96}
@@ -40,10 +42,17 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onClick }) => {
       />
 
       <div className="flex flex-col items-center space-y-2.5 mt-8">
-        <span className="font-semibold text-gray-400">N°{id}</span>
-        <h2 className="font-bold text-2xl">{capitalize(name)}</h2>
+        <span data-testid="pokemon-id" className="font-semibold text-gray-400">
+          {"N°" + id}
+        </span>
+        <h2 data-testid="pokemon-name" className="font-bold text-2xl">
+          {capitalize(name)}
+        </h2>
 
-        <div className="flex justify-center space-x-2">
+        <div
+          data-testid="pokemon-type"
+          className="flex justify-center space-x-2"
+        >
           {pokemon_v2_pokemontypes.map((typeObj) => (
             <span
               key={typeObj.pokemon_v2_type.name}

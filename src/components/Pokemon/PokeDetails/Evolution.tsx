@@ -20,7 +20,10 @@ const Evolution = ({
   evolution: EvolutionProps["evolution"];
 }) => {
   return (
-    <div className="flex flex-row w-full justify-center items-center">
+    <div
+      data-testid="evolution-section"
+      className="flex flex-row w-full justify-center items-center"
+    >
       {evolution.map((evo, index) => {
         const sprite =
           evo.pokemon_v2_pokemons[0]?.pokemon_v2_pokemonsprites[0]?.sprites
@@ -32,16 +35,26 @@ const Evolution = ({
           nextEvolution?.pokemon_v2_pokemonevolutions[0].min_level || "?";
 
         return (
-          <div key={index} className="flex flex-row items-center">
+          <div
+            data-testid="evolution-stage"
+            key={index}
+            className="flex flex-row items-center"
+          >
             <div>
               <Image
+                data-testid={`evolution-img-${evo.name}`}
                 src={sprite}
                 alt={evo.name}
                 width={72}
                 height={72}
                 className="w-18 h-18"
               />
-              <span className="text-center text-sm font-bold">{evo.name}</span>
+              <span
+                data-testid={`evolution-name-${evo.name}`}
+                className="text-center text-sm font-bold"
+              >
+                {evo.name}
+              </span>
             </div>
 
             {nextEvolution && (
