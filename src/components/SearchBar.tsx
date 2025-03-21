@@ -6,7 +6,7 @@ interface SearchBarProps {
 
 const SearchBar = ({ onChange }: SearchBarProps) => {
   return (
-    <div className="w-full rounded-xl px-4 py-3 bg-white shadow-md focus:outline-none flex flex-row">
+    <div className=" z-50 w-full rounded-xl px-4 py-3 bg-white shadow-md focus:outline-none flex flex-row">
       <input
         className="w-full focus:outline-none"
         type="text"
