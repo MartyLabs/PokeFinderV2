@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PokeFinderV2 — Front-End Technical Test
+
+🔗 **Live Demo**:
+
+## Overview
+
+Pokémon Explorer is a modern Pokémon browser built with **Next.js**, **Apollo GraphQL**, **TailwindCSS**, and **Storybook**.
+
+Key features include:
+
+- **Search Pokémon** by name or type.
+- Display **detailed Pokémon cards** with stats, evolution, abilities, etc.
+- **Add/Remove favorites**, stored in `localStorage`.
+- Switch between **/pokemon** and **/favorites** pages.
+- Smooth and animated UX with **Framer Motion**.
+- Fully **responsive** design for mobile, tablet, and desktop.
+
+---
+
+## Tech Stack
+
+- **Next.js 15 (App Router + TurboPack)**
+- **Apollo Client** (GraphQL - PokéAPI)
+- **TailwindCSS** (UI Styling)
+- **Storybook** (Component documentation + Playwright testing)
+- **Playwright** (Component-level E2E testing)
+- **Framer Motion** (UI animations)
+- **React Icons**
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
+git clone https://github.com/MartyLabs/PokeFinderV2.git
+cd PokeFinderV2
+yarn install
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App is accessible at `http://localhost:3000/pokemon`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Storybook
 
-## Learn More
+```bash
+yarn storybook
+```
 
-To learn more about Next.js, take a look at the following resources:
+Storybook runs at: `http://localhost:6006`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Documented components:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `PokemonCard`
+- `PokeDetailsCard`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Run Playwright Tests
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Manual Playwright tests (recommended for debugging)
+npx playwright install
+npx playwright test
+
+# Or run Storybook auto-tests:
+yarn test-storybook
+```
+
+> Tests are located in `src/components/Pokemon/*.test.ts`
+
+---
+
+## Folder Structure
+
+```
+src/
+├── app/                 # Next.js pages
+│   ├── pokemon/
+│   └── favorites/
+├── components/
+│   ├── Pokemon/         # Main components
+│   └── UI/              # UI components (buttons, spinner, etc.)
+├── graphql/             # GraphQL queries
+├── lib/                 # Apollo Provider
+├── utils/               # Helpers and localStorage logic
+```
+
+---
+
+## Bonus Features Implemented
+
+Fully animated Favorite button  
+Playwright tests for UI validation  
+Mobile & tablet responsive layout  
+Filter Pokémon by type  
+Reload button  
+Storybook with live interactivity
+
+---
+
+## Upcoming Features
+
+Pagination or infinite scroll to explore more than 10 Pokémon
+Global state for favorite Pokémon (via Context or Zustand)
+Animations for Pokémon transitions on detail change
+Dark mode
+Progressive Web App (PWA) support
+Multilingual support (i18n)
+404 Page
+Unit tests for utility functions (favorites.ts, utils.tsx)
+
+---
+
+## 📄 Author
+
+Made with ❤️ by Marty
